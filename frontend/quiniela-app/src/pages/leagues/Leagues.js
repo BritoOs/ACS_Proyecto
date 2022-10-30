@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from "axios";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -13,16 +12,6 @@ async function createTeam(teamData){
         body: JSON.stringify(teamData)
     }).then(data => data.json())
 }
-
-
-/* async function getTeams(){
-    return fetch('http://localhost:4000/teams', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    }).then(data => data.json())
-} */
 
 function Leagues() {
     const [show, setShow] = useState(false);
