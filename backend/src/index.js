@@ -6,13 +6,15 @@ const morgan = require('morgan')
 const { pool } = require('./conexion');
 
 // Middlewares
-/* app.use(morgan("dev"));
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded({ extended: false })); */
+app.use(express.urlencoded({ extended: false }));
+
 const bodyParser = require('body-parser');
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors())
 
 //Routes
 app.get('/', (req, res) => {
@@ -20,11 +22,9 @@ app.get('/', (req, res) => {
 })
 
 app.use('/', require('./routes/testroute'))
+app.use('/', require('./routes/loginroute'))
 
-  
-// Require the Routes API  
-// Create a Server and run it on the port 3000
-const server = app.listen(3000, function () {
+const server = app.listen(4000, function () {
     let host = server.address().address
     let port = server.address().port
     console.log("Starting the Server at the port ", port)
