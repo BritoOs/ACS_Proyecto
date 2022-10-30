@@ -20,7 +20,7 @@ function App() {
       <h1 className='text-center'>Quiniela Quatar 2022</h1>
       <BrowserRouter>
         <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard userID = {token}/>} />
           <Route path="/preferences" element={<Preferences />} />
         </Routes>
       </BrowserRouter>

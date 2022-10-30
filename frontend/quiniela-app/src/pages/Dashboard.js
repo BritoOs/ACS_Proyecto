@@ -4,7 +4,7 @@ import Tabs from 'react-bootstrap/Tabs';
 
 import Leagues from './leagues/Leagues';
 
-function Dashboard() {
+function Dashboard({userID}) {
      return (
         <Tabs
         defaultActiveKey="profile"
@@ -13,10 +13,7 @@ function Dashboard() {
         justify
         >
         <Tab eventKey="league" title="Ligas">
-            <Leagues />
-        </Tab>
-        <Tab eventKey="teams" title="Mis equipos">
-            <h1>Hello!!!!</h1>
+            <Leagues userID={userID} />
         </Tab>
         <Tab eventKey="points" title="Puntos" disabled>
             <h1>Hello!!!!</h1>
