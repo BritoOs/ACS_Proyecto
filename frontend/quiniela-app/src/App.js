@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div className="wrapper">
-      <h1>Application</h1>
+      <h1 className='text-center'>Quiniela Quatar 2022</h1>
       <BrowserRouter>
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
