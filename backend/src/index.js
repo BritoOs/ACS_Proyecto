@@ -24,6 +24,7 @@ app.get('/', (req, res) => {
 app.use('/', require('./routes/testroute'))
 app.use('/', require('./routes/loginroute'))
 app.use('/', require('./routes/teamsroutes'))
+app.use('/', require('./routes/matchesroutes'))
 
 const server = app.listen(4000, function () {
     let host = server.address().address
