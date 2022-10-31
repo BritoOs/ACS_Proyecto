@@ -26,10 +26,20 @@ pipeline {
 				}
     			}
 		
-			stage('Static code Analysis') {
+			stage('SonarQube analysis') {
 				steps {
-					withSonarQubeEnv {
-					    sh 'mvn clean package sonar:sonar'
+					script{
+						withSonarQubeEnv {
+						    sh 'mvn clean package sonar:sonar'
+						}
+					}
+				}
+    			}
+		
+			stage('Quality Gate status') {
+				steps {
+					script{
+						waitForQualityGate false
 					}
 				}
     			}
