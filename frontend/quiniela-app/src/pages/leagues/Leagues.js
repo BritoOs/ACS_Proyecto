@@ -77,7 +77,7 @@ function Leagues({userID}) {
 
     return (
         <div>
-            <h2 className="text-center">Ligas del Mundo</h2>
+            <h2 className="text-center">Todas las Ligas del Mundo</h2>
 
             <Button variant="secondary" size="sm" onClick={handleShowNewLeague}>
                 Crear nueva Liga
