@@ -3,6 +3,8 @@ const app = express();
 const cors = require('cors')
 const morgan = require('morgan')
 
+require('dotenv').config()
+
 const { pool } = require('./conexion');
 
 // Middlewares
@@ -26,7 +28,7 @@ app.use('/', require('./routes/loginroute'))
 app.use('/', require('./routes/teamsroutes'))
 app.use('/', require('./routes/matchesroutes'))
 
-const server = app.listen(4000, function () {
+const server = app.listen(process.env.SERVER_PORT, function () {
     let host = server.address().address
     let port = server.address().port
     console.log("Starting the Server at the port ", port)
