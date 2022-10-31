@@ -15,7 +15,7 @@ function Dashboard({userID}) {
         <Tab eventKey="league" title="Ligas">
             <Leagues userID={userID} />
         </Tab>
-        <Tab eventKey="points" title="Puntos" disabled>
+        <Tab eventKey="points" title="Estadísticas" disabled>
             <h1>Hello!!!!</h1>
         </Tab>
         </Tabs>
