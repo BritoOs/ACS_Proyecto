@@ -19,5 +19,19 @@ pipeline {
 					sh 'mvn verify -DskipUnistTests'
 				}
     			}
+		
+			stage('Maven Build') {
+				steps {
+					sh 'mvn clean install'
+				}
+    			}
+		
+			stage('Static code Analysis') {
+				steps {
+					withSonarQubeEnv {
+					    sh 'mvn clean package sonar:sonar'
+					}
+				}
+    			}
 	}
 }
