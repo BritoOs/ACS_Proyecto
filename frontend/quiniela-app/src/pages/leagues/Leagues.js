@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Badge from 'react-bootstrap/Badge';
+import useToken from '../../useToken';
 
 async function createTeam(teamData){
     return fetch('http://localhost:4000/newteam', {
@@ -28,9 +30,13 @@ function Leagues({userID}) {
     const handleCloseNewLeague = () => setShowNewLeague(false);
     const handleShowNewLeague = () => setShowNewLeague(true);
 
-    const [showBets, setShowBets] = useState(false);
-    const handleCloseBets = () => setShowBets(false);
-    const handleShowBets = () => setShowBets(true);
+    const [showBets, setShowMatches] = useState(false);
+    const handleCloseMatches = () => setShowMatches(false);
+    const handleShowMatches = () => setShowMatches(true);
+
+    const [showBet, setShowBet] = useState(false);
+    const handleCloseBet = () => setShowBet(false);
+    const handleShowBet = () => setShowBet(true);
 
     const [teamname, setLeagueName] = useState();
     const [for_betting, setBetMode] = useState(false);
@@ -41,6 +47,14 @@ function Leagues({userID}) {
 
     const [user_id, setUserID] = useState();
     const [team_id, setTeamID] = useState();
+
+    const [match_id, setMatchID] = useState();
+    const [opponent1, setOpponent1] = useState();
+    const [opponent2, setOpponent2] = useState();
+    const [opponent1gols, setOpponent1gols] = useState();
+    const [opponent2gols, setOpponent2gols] = useState();
+    const [flag1, setFlag1] = useState();
+    const [flag2, setFlag2] = useState();
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -134,7 +148,7 @@ function Leagues({userID}) {
                 </Modal.Body>
             </Modal>
 
-            <Modal /* size="lg" */ fullscreen={true} show={showBets} onHide={handleCloseBets}>
+            <Modal /* size="lg" */ fullscreen={true} show={showBets} onHide={handleCloseMatches}>
                 <Modal.Header closeButton>
                     <Modal.Title>Apuestas para esta Liga</Modal.Title>
                 </Modal.Header>
@@ -148,6 +162,7 @@ function Leagues({userID}) {
                                 <th class="text-center">Partido</th>
                                 <th class="text-center">Fecha y hora</th>
                                 <th class="text-center">Estadio</th>
+                                <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -156,35 +171,108 @@ function Leagues({userID}) {
                                         <tr>
                                             <td class="text-center">{match.match_id}</td>
                                             <td class="text-center">
-                                                <div class="d-flex justify-content-between">
-                                                    <div>
-                                                        {'Left'}
-                                                    </div>
-                                                    <div>
+                                                <div class="row">
+                                                    <div class="col-sm">
                                                         {match.opponent1}
-                                                        {' '}
+                                                    </div>
+                                                    <div class="col-sm">
                                                         <img width="50px" src={match.flag1}/>
-                                                        {' ' + match.opponent1gols + ' - ' + match.opponent2gols + ' '}
-                                                        <img width="50px" src={match.flag2}/>
                                                         {' '}
-                                                        {match.opponent1}
+                                                        {' ' + match.opponent1gols + ' '}
+                                                        {' - '}
+                                                        {' ' + match.opponent2gols + ' '}
+                                                        {' '}
+                                                        <img width="50px" src={match.flag2}/>
                                                     </div>
-                                                    <div>
-                                                        {'Right'}
+                                                    <div class="col-sm">
+                                                        {match.opponent2}
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="text-center">{match.matchdate + ' - ' + match.matchtime}</td>
                                             <td class="text-center">{match.stadium}</td>
+                                            <td class="text-center">
+                                                <Button 
+                                                    variant="secondary" 
+                                                    onClick={ (e) => {
+                                                        setMatchID(match.match_id);
+                                                        setOpponent1(match.opponent1);
+                                                        setOpponent2(match.opponent2);
+                                                        setFlag1(match.flag1);
+                                                        setFlag2(match.flag2);
+                                                        handleShowBet();
+                                                    }}>
+                                                    Apuesta
+                                                </Button>
+                                            </td>
                                         </tr>
                                     )
                                 })}
                             </tbody>
                         </Table>
                         <div className="d-grid gap-2 mt-3">
-                            <Button variant="secondary" onClick={handleCloseBets}>Cerrar</Button>
+                            <Button variant="secondary" onClick={handleCloseMatches}>Cerrar</Button>
                         </div>
                     </div>
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={showBet} onHide={handleCloseBet}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Información de Apuesta</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                <form onSubmit={handleSubmit}>
+                    <div>
+
+                        <div class="row">
+                            <div class="d-flex col-sm justify-content-center">
+                                <img src={flag1}  width="150px" />
+                            </div>
+                            <div class="d-flex col-sm justify-content-center">
+                                <img src={flag2} width="150px" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="text-center col-sm">
+                                <label>{opponent1}</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    step="1"
+                                    required
+                                    onChange={e => setOpponent1gols(e.target.value)}
+                                />
+                            </div>
+
+                            <div class="text-center col-sm">
+                                <label>{opponent2}</label>
+                                <br></br>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    step="1"
+                                    required
+                                    onChange={(e) => setOpponent2gols(e.target.checked) }
+                                />
+                            </div>
+                        </div>
+
+                        <div className="d-grid gap-2 mt-3">
+                            <Button variant="secondary" onClick={handleCloseBet}>Cerrar</Button>
+                            <Button 
+                                type="submit" 
+                                variant="primary" 
+                                onClick={(e) => {
+                                    handleCloseBet();
+                                }}>
+                                Guardar
+                            </Button>
+                        </div>
+                    </div>
+                </form>
                 </Modal.Body>
             </Modal>
 
@@ -212,8 +300,10 @@ function Leagues({userID}) {
                                         <Button 
                                             variant="success" 
                                             onClick={(e) => {
+                                                setUserID(userID);
+                                                setTeamID(team.team_id);
                                                 getMatches(e);
-                                                handleShowBets();
+                                                handleShowMatches();
                                             }}>
                                             Ver Apuestas
                                         </Button>
